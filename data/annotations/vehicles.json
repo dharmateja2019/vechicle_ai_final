@@ -1,0 +1,24 @@
+{
+  "images": [
+    { "id": 1, "file_name": "car1.jpg" },
+    { "id": 2, "file_name": "truck1.jpg" }
+  ],
+  "annotations": [
+    {
+      "image_id": 1,
+      "bbox": [50, 60, 300, 200],
+      "category_id": 1
+    },
+    {
+      "image_id": 2,
+      "bbox": [40, 70, 320, 240],
+      "category_id": 3
+    }
+  ],
+  "categories": [
+    { "id": 1, "name": "car" },
+    { "id": 2, "name": "bus" },
+    { "id": 3, "name": "truck" },
+    { "id": 4, "name": "bike" }
+  ]
+}
