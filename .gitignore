@@ -2,31 +2,35 @@
 __pycache__/
 *.pyc
 *.pyo
+*.pyd
+*.log
 
 # Virtual environments
-vechicle_ai_env/
+ov_env/
+.venv/
+*_env/
 
-# OpenVINO / ML models
+# OpenVINO / AI artifacts
 *.onnx
 *.bin
 *.xml
-*.safetensors
 *.pt
 *.pth
-*.gguf
+*.engine
 
-# HuggingFace / cache
-.cache/
-huggingface/
-transformers/
+# Datasets & media
+data/
 datasets/
+*.mp4
+*.avi
+*.jpg
+*.png
 
-# Logs & temp
-logs/
-tmp/
-*.log
+# Build artifacts
+build/
+dist/
+.cache/
+.pytest_cache/
 
-# OS / Editor
-.vscode/
-.idea/
+# OS
 .DS_Store

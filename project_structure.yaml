@@ -1,0 +1,49 @@
+project_structure:
+  root_directory: vehicle_ai_final
+
+  directories:
+    - name: data
+      description: Dataset storage
+      subdirectories:
+        - name: images
+          description: Input vehicle images
+        - name: annotations
+          description: Annotation files (minimal JSON)
+
+    - name: models
+      description: Model definitions and exported weights
+      files:
+        - detection_model.py
+        - recognition_model.py
+        - "*.pth"
+        - "*.onnx"
+
+    - name: training
+      description: Model training and checkpoint utilities
+      files:
+        - create_dummy_checkpoint.py
+
+    - name: inference
+      description: Inference and evaluation scripts
+      files:
+        - infer_openvino.py
+        - infer_pytorch.py
+        - infer_vlm.py
+        - compare_inference.py
+        - labels.py
+        - utils.py
+
+    - name: openvino
+      description: ONNX export and OpenVINO integration
+      files:
+        - export_onnx.py
+
+    - name: gui
+      description: User interface for visual inference
+      files:
+        - app.py
+
+  root_files:
+    - functional_workflow.yaml
+    - project_structure.yaml
+    - README.md

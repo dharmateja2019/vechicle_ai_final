@@ -1,0 +1,76 @@
+functional_workflow:
+  project_name: Vehicle Detection & Recognition using MobileNetV3
+  version: v1.0
+  optimization_target: CPU_and_Edge
+
+  input:
+    data_type: image
+    supported_formats:
+      - jpg
+      - png
+    input_location: data/images/
+
+  workflow_steps:
+    - step_id: 1
+      name: image_loading
+      description: Load input image from local filesystem
+      output: raw_image
+
+    - step_id: 2
+      name: image_preprocessing
+      description: Resize image to 320x320 and normalize pixel values
+      output: preprocessed_tensor
+
+    - step_id: 3
+      name: vehicle_detection
+      model: MobileNetV3
+      framework: PyTorch
+      description: Detect vehicles and predict bounding boxes with coarse class
+      output:
+        - bounding_boxes
+        - vehicle_class_id
+
+    - step_id: 4
+      name: onnx_model_execution
+      description: Execute ONNX model using OpenVINO Runtime
+      runtime: OpenVINO
+      output:
+        - optimized_detection_output
+        - inference_latency_ms
+
+    - step_id: 5
+      name: vehicle_cropping
+      description: Crop detected vehicle regions from original image
+      output: cropped_vehicle_images
+
+    - step_id: 6
+      name: vehicle_recognition
+      model: MobileNetV3_Small
+      framework: PyTorch
+      description: Predict vehicle type and color
+      output:
+        - vehicle_type
+        - vehicle_color
+
+    - step_id: 7
+      name: visualization
+      description: Draw bounding boxes and labels on image
+      output: annotated_image
+
+    - step_id: 8
+      name: benchmarking
+      description: Compare inference performance between PyTorch and OpenVINO
+      output:
+        - pytorch_latency
+        - openvino_latency
+        - fps_comparison
+
+  final_output:
+    output_formats:
+      - image
+      - console_logs
+    details:
+      - bounding_box_coordinates
+      - vehicle_type
+      - vehicle_color
+      - inference_latency
