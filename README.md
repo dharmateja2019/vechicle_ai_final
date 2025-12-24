@@ -1,6 +1,7 @@
 # Vehicle Detection & Recognition using MobileNetV3
 
 ## Overview
+
 This project implements an end-to-end **Vehicle Detection and Recognition** pipeline
 using **MobileNetV3**. The system is optimized for **CPU and edge environments** using
 **OpenVINO Runtime** with **ONNX models**, enabling fast and efficient inference.
@@ -12,6 +13,7 @@ and predicts their **color**, while providing performance comparisons between
 ---
 
 ## Key Features
+
 - Lightweight **MobileNetV3** backbone
 - Vehicle detection with bounding boxes
 - Vehicle recognition (type + color)
@@ -23,12 +25,14 @@ and predicts their **color**, while providing performance comparisons between
 ---
 
 ## Supported Vehicle Types
+
 - Car
 - Bus
 - Truck
 - Bike
 
 ## Supported Vehicle Colors
+
 - White
 - Black
 - Red
@@ -39,6 +43,7 @@ and predicts their **color**, while providing performance comparisons between
 ---
 
 ## Project Pipeline
+
 Input Image
 ↓
 Vehicle Detection (MobileNetV3 – PyTorch)
@@ -59,6 +64,7 @@ Copy code
 ---
 
 ## Directory Structure
+
 vehicle_ai_final/
 │
 ├── data/
@@ -70,7 +76,7 @@ vehicle_ai_final/
 │ └── recognition_model.py and .pth,.onnx files
 │
 ├── training/
-│ └── create_dummy_checkpoint.py, 
+│ └── create_dummy_checkpoint.py,
 │
 ├── inference/
 │ ├── infer_openvino.py
@@ -91,9 +97,17 @@ Copy code
 
 ---
 
+## Install dependencies
+
+python3 -m venv vechicle_ai_env
+source vechicle_ai_env/bin/activate
+python -m pip install --upgrade pip setuptools wheel
+pip install -r requirements.txt
+
 ## Execution Steps
 
 ### 1. Create Dummy Checkpoint
+
 ```bash
 python3 training/create_dummy_checkpoint.py
 2. Export ONNX
@@ -105,5 +119,6 @@ python3 inference/infer_openvino.py
 4. Performance Comparison
 python3 inferenc/compare_inference.py
 
-5. GUI 
+5. GUI
 streamlit run gui/app.py
+```

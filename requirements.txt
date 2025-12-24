@@ -1,7 +1,7 @@
-openvino==2024.6.0
-openvino-dev==2024.6.0
-numpy==1.26.4
-opencv-python==4.10.0.84
+openvino
+openvino-dev
+numpy
+opencv-python
 torch
 torchvision
 streamlit

@@ -1,5 +1,5 @@
 import argparse, time, cv2, numpy as np, os, sys
-from openvino.runtime import Core
+from openvino import Core
 
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.insert(0, PROJECT_ROOT)
