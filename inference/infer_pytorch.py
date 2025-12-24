@@ -4,7 +4,7 @@ PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.insert(0, PROJECT_ROOT)
 
 from models.detection_model import VehicleDetector
-from inference.utils import safe_crop, detect_vehicle_color, center_crop
+from inference.utils import detect_vehicle_color, center_crop
 
 TYPE = ["Car", "Bus", "Truck", "Bike"]
 

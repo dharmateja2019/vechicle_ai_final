@@ -1,12 +1,14 @@
 import argparse, time, cv2, numpy as np, os, sys
+import torch
 from openvino import Core
 
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.insert(0, PROJECT_ROOT)
 
 from inference.labels import VEHICLE_TYPES
-from inference.utils import safe_crop, detect_vehicle_color, to_numpy
+from inference.utils import center_crop, detect_vehicle_color
 
+TYPE = ["Car", "Bus", "Truck", "Bike"]
 
 def run_openvino(image_path, device="CPU"):
     ie = Core()
@@ -17,15 +19,16 @@ def run_openvino(image_path, device="CPU"):
     orig = img.copy()
     h, w, _ = img.shape
 
-    inp = cv2.resize(img, (320, 320))
-    blob = inp.transpose(2, 0, 1)[None].astype(np.float32) / 255.0
+    img_resized = cv2.resize(img, (320, 320))
+    x = torch.from_numpy(img_resized).permute(2, 0, 1).unsqueeze(0).float() / 255.0
 
     start = time.time()
-    outputs = compiled([blob])
+    with torch.no_grad():
+        cls, box = compiled(x)
     latency = (time.time() - start) * 1000
 
-    cls = to_numpy(outputs[0])
-    box = to_numpy(outputs[1])
+    vehicle = TYPE[cls.argmax().item()]
+
     # ✅ SAME box semantics as OpenVINO
     bx = box[0].tolist()
     bx = box[0] if box.ndim > 1 else box
@@ -33,7 +36,8 @@ def run_openvino(image_path, device="CPU"):
 
     print("RAW BOX:", bx)
     print("IMAGE SIZE:", w, h)
-# TRY OPTION A: normalized x1,y1,x2,y2
+
+    # TRY OPTION A: normalized x1,y1,x2,y2
     x1 = int(bx[0] * w)
     y1 = int(bx[1] * h)
     x2 = int(bx[2] * w)
@@ -44,10 +48,19 @@ def run_openvino(image_path, device="CPU"):
 
     print("Saved DEBUG_BOX.jpg")
 
+
+    x1 = int(bx[0] * w)
+    y1 = int(bx[1] * h)
+    x2 = int(bx[2] * w)
+    y2 = int(bx[3] * h)
+
+    crop = center_crop(orig, x1, y1, x2, y2, ratio=0.45)
+
     if crop is None or crop.size == 0:
         color = "Unknown"
     else:
         color = detect_vehicle_color(crop)
+
 
     cv2.rectangle(orig, (x1, y1), (x2, y2), (0, 255, 0), 2)
     cv2.putText(

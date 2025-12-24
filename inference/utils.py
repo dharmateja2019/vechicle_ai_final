@@ -113,3 +113,23 @@ def detect_vehicle_color(crop):
 
     # --- Remaining cases ---
     return "Gray"
+
+import numpy as np
+
+def to_numpy(tensor):
+    """
+    Safely convert tensor-like objects to NumPy arrays.
+    Works with NumPy, PyTorch tensors, and OpenVINO outputs.
+    """
+    if isinstance(tensor, np.ndarray):
+        return tensor
+
+    # PyTorch tensor
+    if hasattr(tensor, "detach"):
+        return tensor.detach().cpu().numpy()
+
+    # OpenVINO Tensor
+    if hasattr(tensor, "data"):
+        return np.array(tensor.data)
+
+    return np.array(tensor)
